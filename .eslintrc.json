@@ -1,0 +1,28 @@
+{
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"jsx": true,
+		"useJSXTextNode": true,
+		"ecmaVersion": 2018,
+		"sourceType": "module",
+		"project": "./tsconfig.json"
+	},
+	"plugins": [
+		"@typescript-eslint"
+	],
+	"extends": [
+		"plugin:@typescript-eslint/recommended"
+	],
+	"rules": {
+		"@typescript-eslint/no-explicit-any": [
+			"warn",
+			{
+				"ignoreRestArgs": true
+			}
+		],
+		"@typescript-eslint/no-non-null-assertion": [
+			"off"
+		],
+		"semi": ["error", "never"]
+	}
+}
