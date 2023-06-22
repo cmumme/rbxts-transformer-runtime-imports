@@ -15,8 +15,8 @@ And then add it to your tsconfig like so:
 		...
 		"plugins": [
 			{
-                "transform": "rbxts-transformer-runtime-imports"
-            }
+				"transform": "rbxts-transformer-runtime-imports"
+			}
 		]
 	}
 }
