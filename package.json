@@ -1,6 +1,6 @@
 {
 	"name": "rbxts-transformer-runtime-imports",
-	"version": "1.2.2",
+	"version": "1.2.3",
 	"description": "A transformer that allows imports to only be called if the code is running on the server or the client.",
 	"main": "out/index.js",
 	"author": {
