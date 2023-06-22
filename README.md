@@ -1,6 +1,28 @@
 # rbxts-transformer-runtime-imports
 This is a transformer that allows imports to only be called if the code is running on the server or the client.
 
+## Installation
+Simply install this transformer with your favorite package manager:
+```sh
+$ yarn add rbxts-transformer-runtime-imports
+OR
+$ npm install rbxts-transformer-runtime-imports
+```
+And then add it to your tsconfig like so:
+```json
+{
+	"compilerOptions": {
+		...
+		"plugins": [
+			{
+                "transform": "rbxts-transformer-runtime-imports"
+            }
+		]
+	}
+}
+
+```
+
 ## Example
 **Input:**
 ```ts
@@ -52,7 +74,7 @@ return {
 }
 ```
 
-**DOES NOT CURRENTLY SUPPORT STAR IMPORTS SUCH AS:**
+This module doesn't currently support star imports such as the following, but feel free to open a pull request on the GitHub repo, it shouldn't be a very hard feature to add.
 ```ts
 //@runtime server
 import * as ServerModule from "Server/MyServerModule"
