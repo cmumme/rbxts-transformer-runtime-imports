@@ -1,16 +1,18 @@
 {
 	"name": "rbxts-transformer-runtime-imports",
-	"version": "1.2.0",
-	"description": "A transformer that allows imports to only be called if the runtime of the code is on the server or the client.",
+	"version": "1.2.1",
+	"description": "A transformer that allows imports to only be called if the code is running on the server or the client.",
 	"main": "out/index.js",
-	"license": "ISC",
-	"dependencies": {
-		"typescript": "4.6.2"
+	"author": {
+		"name": "typechecked",
+		"email": "me@typechecked.dev",
+		"url": "https://typechecked.dev"
 	},
+	"repository": "github:cmumme/rbxts-transformer-runtime-imports",
+	"license": "ISC",
 	"scripts": {
 		"build": "tsc",
 		"watch": "tsc -w",
-		"test": "tsc -p testFiles.tsconfig.json",
 		"prepublishOnly": "npm run build"
 	},
 	"devDependencies": {
@@ -22,7 +24,8 @@
 		"eslint-plugin-prettier": "^3.2.0",
 		"prettier": "^2.2.1",
 		"ts-expose-internals": "^4.5.4",
-		"ts-transformer-testing-library": "^1.0.0-alpha.7"
+		"ts-transformer-testing-library": "^1.0.0-alpha.7",
+		"typescript": "^4.6.2"
 	},
 	"files": [
 		"out"
