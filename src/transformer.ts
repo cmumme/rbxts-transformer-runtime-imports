@@ -66,7 +66,7 @@ function assignROIExpression(importPath: string) {
 		factory.createVariableDeclaration(cleanImportPath(importPath), undefined, undefined, factory.createCallExpression(
 			factory.createPropertyAccessExpression(
 			  factory.createCallExpression(
-				factory.createIdentifier("import"), // how do i put a SyntaxKind.ImportKeyword token in here
+				factory.createToken(SyntaxKind.ImportKeyword) as ts.Expression,
 				undefined,
 				[factory.createStringLiteral(importPath)]
 			  ),
