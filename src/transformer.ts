@@ -1,5 +1,4 @@
 import ts, { EmitHint, EntityName, ExpressionStatement, NamedImports, NewLineKind, NodeFlags, Statement, SyntaxKind, factory } from "typescript"
-import {} from "ts-expose-internals"
 
 /**
  * This is the transformer's configuration, the values are passed from the tsconfig.
@@ -157,6 +156,7 @@ function runtimeImportBody(importPath: string, namedBindings?: NamedImports, nam
 function getImportType(importPath: string, qualifier?: EntityName, isTypeOf = true) {
 	const importTypeNode = factory.createImportTypeNode( // The overload that's recommended literally doesn't work
 		factory.createLiteralTypeNode(factory.createStringLiteral(importPath)),
+		undefined,
 		qualifier,
 		undefined,
 		isTypeOf
