@@ -4,7 +4,7 @@ import ts, { EmitHint, EntityName, ExpressionStatement, NamedImports, NewLineKin
  * This is the transformer's configuration, the values are passed from the tsconfig.
  */
 export interface TransformerConfig {
-	_: void;
+	leadingText?: string
 }
 
 /**
@@ -141,10 +141,10 @@ function visitImportDeclaration(context: TransformContext, node: ts.ImportDeclar
 	const leadingTriviaRange = (ts.getLeadingCommentRanges(sourceFile.getFullText(), node.getFullStart()) ?? [])[0]
 	if(!leadingTriviaRange) return node
 	const leadingTriviaText = sourceFile.getFullText().slice(leadingTriviaRange.pos, leadingTriviaRange.end).toLowerCase()
-	if(!leadingTriviaText.startsWith("//@runtime")) return node
+	const leadingTriviaTextConfig = context.config.leadingText ?? "//@runtime";
+	if(!leadingTriviaText.startsWith(leadingTriviaTextConfig)) return node
 
-	const leadingTriviaSections = leadingTriviaText.split(" ")
-	const leadingTriviaRuntimeArg = leadingTriviaSections[1]
+	const leadingTriviaRuntimeArg = leadingTriviaText.substring(leadingTriviaTextConfig.length).trim()
 	if(leadingTriviaRuntimeArg !== "server" && leadingTriviaRuntimeArg !== "client") return node
 
 	return [
