@@ -1,11 +1,10 @@
 import ts, { EmitHint, EntityName, ExpressionStatement, NamedImports, NewLineKind, NodeFlags, Statement, SyntaxKind, factory } from "typescript"
-import {} from "ts-expose-internals"
 
 /**
  * This is the transformer's configuration, the values are passed from the tsconfig.
  */
 export interface TransformerConfig {
-	_: void;
+	leadingText?: string
 }
 
 /**
@@ -33,7 +32,11 @@ export class TransformContext {
 }
 
 function cleanImportPath(importPath: string) {
-	importPath = `_${importPath}_import_data`
+	// match behavior with roblox-ts in var naming of import data where possible
+	const lastElement = importPath.split("/").pop() ?? importPath;
+
+	// *but* add a second underscore to prevent naming collisions
+	importPath = `__${lastElement}`
 	importPath = importPath.replace(/\//gi, "_")
 	importPath = importPath.replace(/[^a-z_$]/gi, "")
 
@@ -59,62 +62,20 @@ function runServiceCall(methodName: string) {
 }
 
 function assignROIExpression(importPath: string) {
-	return factory.createExpressionStatement(
-		factory.createCallExpression(
-			factory.createParenthesizedExpression(
-				factory.createArrowFunction(
-					[
-						factory.createModifier(SyntaxKind.AsyncKeyword)
-					],
-					undefined,
-					[ ],
-					undefined,
-					undefined,
-					factory.createBlock([
-						factory.createExpressionStatement(
-							factory.createBinaryExpression(
-								factory.createIdentifier(cleanImportPath(importPath)),
-								factory.createToken(SyntaxKind.EqualsToken),
-								factory.createAwaitExpression(
-									factory.createCallExpression(
-										factory.createIdentifier("import"), // how do i put a SyntaxKind.ImportKeyword token in here
-										undefined,
-										[
-											factory.createStringLiteral(importPath)
-										]
-									)
-								)
-							)
-						)
-					])
-				)
+	return factory.createVariableStatement(undefined, factory.createVariableDeclarationList([
+		factory.createVariableDeclaration(cleanImportPath(importPath), undefined, undefined, factory.createCallExpression(
+			factory.createPropertyAccessExpression(
+			  factory.createCallExpression(
+				factory.createToken(SyntaxKind.ImportKeyword) as ts.Expression,
+				undefined,
+				[factory.createStringLiteral(importPath)]
+			  ),
+			  factory.createIdentifier("expect")
 			),
 			undefined,
-			undefined
-		)
-	)
-}
-
-function waitForROILoop(importPath: string) {
-	return factory.createWhileStatement(
-		factory.createBinaryExpression(
-			factory.createIdentifier(cleanImportPath(importPath)),
-			factory.createToken(SyntaxKind.EqualsEqualsEqualsToken),
-			factory.createIdentifier("undefined")
-		),
-		factory.createBlock([
-			factory.createExpressionStatement(
-				factory.createCallExpression(
-					factory.createPropertyAccessExpression(
-						factory.createIdentifier("task"),
-						"wait"
-					),
-					undefined,
-					undefined
-				)
-			)
-		])
-	)
+			[]
+		  )),
+	], NodeFlags.Const));
 }
 
 function assignDefaultExport(importPath: string, name: string) {
@@ -148,7 +109,6 @@ function assignNamedBindings(namedBindings: NamedImports, importPath: string): E
 function runtimeImportBody(importPath: string, namedBindings?: NamedImports, name?: string) {
 	return factory.createBlock([
 		assignROIExpression(importPath),
-		waitForROILoop(importPath),
 		name ? assignDefaultExport(importPath, name) : undefined,
 		...(namedBindings ? assignNamedBindings(namedBindings, importPath) : [])
 	].filter(e => e !== undefined) as Statement[])
@@ -157,6 +117,7 @@ function runtimeImportBody(importPath: string, namedBindings?: NamedImports, nam
 function getImportType(importPath: string, qualifier?: EntityName, isTypeOf = true) {
 	const importTypeNode = factory.createImportTypeNode( // The overload that's recommended literally doesn't work
 		factory.createLiteralTypeNode(factory.createStringLiteral(importPath)),
+		undefined,
 		qualifier,
 		undefined,
 		isTypeOf
@@ -180,16 +141,13 @@ function visitImportDeclaration(context: TransformContext, node: ts.ImportDeclar
 	const leadingTriviaRange = (ts.getLeadingCommentRanges(sourceFile.getFullText(), node.getFullStart()) ?? [])[0]
 	if(!leadingTriviaRange) return node
 	const leadingTriviaText = sourceFile.getFullText().slice(leadingTriviaRange.pos, leadingTriviaRange.end).toLowerCase()
-	if(!leadingTriviaText.startsWith("//@runtime")) return node
+	const leadingTriviaTextConfig = context.config.leadingText ?? "//@runtime";
+	if(!leadingTriviaText.startsWith(leadingTriviaTextConfig)) return node
 
-	const leadingTriviaSections = leadingTriviaText.split(" ")
-	const leadingTriviaRuntimeArg = leadingTriviaSections[1]
+	const leadingTriviaRuntimeArg = leadingTriviaText.substring(leadingTriviaTextConfig.length).trim()
 	if(leadingTriviaRuntimeArg !== "server" && leadingTriviaRuntimeArg !== "client") return node
 
 	return [
-		factory.createVariableStatement(undefined, factory.createVariableDeclarationList([
-			factory.createVariableDeclaration(cleanImportPath(path.text), factory.createToken(SyntaxKind.ExclamationToken), getImportType(path.text)),
-		], NodeFlags.Let)),
 		clause.name ? 
 			factory.createVariableStatement(undefined, factory.createVariableDeclarationList([
 				factory.createVariableDeclaration(

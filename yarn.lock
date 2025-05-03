@@ -115,6 +115,11 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.18.51.tgz#cb90935b89c641201c3d07a595c3e22d1cfaa417"
   integrity sha512-P9bsdGFPpVtofEKlhWMVS2qqx1A/rt9QBfihWlklfHHpUpjtYse5AzFz6j4DWrARLYh6gRnw9+5+DJcrq3KvBA==
 
+"@types/ts-expose-internals@npm:ts-expose-internals@5.2.2":
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/ts-expose-internals/-/ts-expose-internals-5.2.2.tgz#5a8dbc4845e4d2416b0f15933182a7e16e3a9261"
+  integrity sha512-HYknqnfn3hQcNV1a00Ag4Nv+LM5wv2hUDzLH2oh+utspiKafKYtRYdv7a/iNhtqbzRJVV3FgVYRNoWKA3AZ3Uw==
+
 "@typescript-eslint/eslint-plugin@^4.9.1":
   version "4.33.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-4.33.0.tgz#c24dc7c8069c7706bc40d99f6fa87edcb2005276"
@@ -1068,11 +1073,6 @@ to-regex-range@^5.0.1:
   dependencies:
     is-number "^7.0.0"
 
-ts-expose-internals@^4.5.4:
-  version "4.9.5"
-  resolved "https://registry.yarnpkg.com/ts-expose-internals/-/ts-expose-internals-4.9.5.tgz#c30a77d4c95a423e1c79bbabc95f9b9d00f2fbe3"
-  integrity sha512-+T1UsxhFi+hbVyYwHrOUb9tjyhry1iJoiDwDRjZZTiBREb7oE78kRHSqyFv8gZhwZCFFOGZyI66X2gHUFAt8lA==
-
 ts-transformer-testing-library@^1.0.0-alpha.7:
   version "1.0.0-alpha.7"
   resolved "https://registry.yarnpkg.com/ts-transformer-testing-library/-/ts-transformer-testing-library-1.0.0-alpha.7.tgz#bcb445f8811dbf7741796c159c5e0e57c4250c53"
@@ -1104,10 +1104,10 @@ type-fest@^0.20.2:
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.20.2.tgz#1bf207f4b28f91583666cb5fbd327887301cd5f4"
   integrity sha512-Ne+eE4r0/iWnpAxD852z3A+N0Bt5RN//NjJwRd2VFHEmrywxf5vsZlh4R6lixl6B+wz/8d+maTSAkN1FIkI3LQ==
 
-typescript@4.6.2:
-  version "4.6.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.6.2.tgz#fe12d2727b708f4eef40f51598b3398baa9611d4"
-  integrity sha512-HM/hFigTBHZhLXshn9sN37H085+hQGeJHJ/X7LpBWLID/fbc2acUMfU+lGD98X81sKP+pFa9f0DZmCwB9GnbAg==
+typescript@5.2.2:
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.2.2.tgz#5ebb5e5a5b75f085f22bc3f8460fba308310fa78"
+  integrity sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==
 
 typescript@~3.7.2:
   version "3.7.7"
